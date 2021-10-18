@@ -6,7 +6,7 @@ namespace Task1
 	{
 		static void Main(string[] args)
 		{
-			const float PI = 3.14f;
+			const float PI = 3.1415f;
 			Console.WriteLine("Input radius");
 			float radius = float.Parse(Console.ReadLine());
 			Console.WriteLine("Input length");
