@@ -4,19 +4,18 @@ namespace Models
 {
     public class MyCollection<T>
     {
-        public int Capacity { get; private set; } = 1;
+        public int Capacity { get => items.Length; }
         public int Count { get; private set; } = 0;
         T[] items;
         public T this[int index] => items[index];
         public MyCollection()
         {
-            items = new T[Capacity];
+            items = new T[1];
         }
         private void ExtendCollection()
         {
             T[] temp = items;
-            Capacity *= 2;
-            items = new T[Capacity];
+            items = new T[temp.Length * 2];
             TransferData(temp);
         }
         private void TransferData(T[] from)
@@ -52,8 +51,7 @@ namespace Models
         public void Clear()
         {
             Count = 0;
-            Capacity = 1;
-            items = new T[Capacity];
+            items = new T[1];
         }
     }
 }
