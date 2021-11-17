@@ -4,10 +4,28 @@ namespace Models
 {
     public class MyCollection<T>
     {
-        public int Capacity { get => items.Length; }
+        public int Capacity => items.Length;
         public int Count { get; private set; } = 0;
         T[] items;
-        public T this[int index] => items[index];
+        public T this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+                return items[index];
+            }
+            set
+            {
+                if (index < 0 || index >= Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+                items[index] = value;
+            }
+        }
         public MyCollection()
         {
             items = new T[1];
