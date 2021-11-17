@@ -6,7 +6,10 @@ namespace Models
 {
     public class MyList : IList<MyItem>
     {
+        static readonly int defaultSize = 4;
         private MyItem[] items;
+        private int version;
+        private int position = -1;
         public MyItem this[int index] { 
             get
             {
@@ -28,6 +31,7 @@ namespace Models
         public int Count { get; private set; } = 0;
         public int Capacity => items.Length;
         public bool IsReadOnly => false;
+        public MyItem Current => items[position];
 
         private void ExtendCollection()
         {
@@ -44,12 +48,13 @@ namespace Models
         }
         public MyList()
         {
-            items = new MyItem[1];
+            items = new MyItem[defaultSize];
         }
         public void Clear()
         {
             Count = 0;
-            items = new MyItem[1];
+            items = new MyItem[defaultSize];
+            version++;
         }
 
         public bool HasSpace()
@@ -63,7 +68,9 @@ namespace Models
             {
                 this[i - 1] = this[i];
             }
+            this[Count - 1] = null;
             Count--;
+            version++;
         }
         public int IndexOf(MyItem item)
         {
@@ -88,6 +95,7 @@ namespace Models
                 this[i] = this[i - 1];
             }
             Count++;
+            version++;
             this[index] = item;
         }
 
@@ -108,10 +116,7 @@ namespace Models
             return false;
         }
 
-        public void CopyTo(MyItem[] array, int arrayIndex)
-        {
-            items.CopyTo(array, arrayIndex);
-        }
+        public void CopyTo(MyItem[] array, int arrayIndex) => items.CopyTo(array, arrayIndex);
 
         public bool Remove(MyItem item)
         {
@@ -121,17 +126,70 @@ namespace Models
                 RemoveAt(index);
                 return true;
             }
+            version++;
             return false;
         }
-
-        IEnumerator<MyItem> IEnumerable<MyItem>.GetEnumerator()
+        //Сделано по приколу, на проде такое бы не городил)
+        public override string ToString()
         {
-            return (IEnumerator<MyItem>)items.GetEnumerator();
+            MyItem[] temp = new MyItem[Count];
+            
+            for (int i = 0; i < Count; i++)
+            {
+                temp[i] = this[i];
+            }
+            return String.Join<MyItem>(Environment.NewLine, temp) + Environment.NewLine +
+                $"Count: {Count}, Capacity: {Capacity}";
         }
+        // Конец прикола
+        IEnumerator<MyItem> IEnumerable<MyItem>.GetEnumerator() => new Enumerator(this);
 
-        public IEnumerator GetEnumerator()
+        public Enumerator GetEnumerator() => new Enumerator(this);
+
+        IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
+
+        public struct Enumerator : IEnumerator<MyItem>
         {
-            return items.GetEnumerator();
+            private readonly MyList collection;
+            private readonly int version;
+            private int currentIndex;
+
+            internal Enumerator(MyList collection)
+            {
+                this.collection = collection ?? throw new ArgumentNullException(nameof(collection));
+                this.version = collection.version;
+                this.currentIndex = -1;
+            }
+
+            public MyItem Current
+            {
+                get
+                {
+                    if (this.currentIndex < 0 || this.currentIndex >= this.collection.Count)
+                    {
+                        throw new InvalidOperationException();
+                    }
+
+                    return this.collection.items[this.currentIndex];
+                }
+            }
+
+            object IEnumerator.Current => this.Current;
+
+            void IDisposable.Dispose()
+            { }
+
+            public bool MoveNext()
+            {
+                if (this.version != this.collection.version)
+                {
+                    throw new InvalidOperationException("Collection cannot be modified.");
+                }
+
+                return ++this.currentIndex < this.collection.Count;
+            }
+
+            public void Reset() => this.currentIndex = -1;
         }
     }
 }

@@ -8,31 +8,23 @@ namespace Hw10Task1
     {
         static void Main(string[] args)
         {
-            List<int> ints = new List<int>();
             MyList items = new MyList();
             items.Add(new MyItem("String1", 5));
             items.Add(new MyItem("String2", 15));
-            items.Add(new MyItem());
+            items.Add(new MyItem("Pablo", 64));
 
-            foreach(var item in items)
-            {
-                Console.WriteLine(item);
-            }
+            Console.WriteLine(items);
 
             items.RemoveAt(0);
-            foreach (var item in items)
-            {
-                Console.WriteLine(item);
-            }
-            Console.WriteLine(items.Capacity);
+            items.Clear();
+            Console.WriteLine(items);
+
+            items.Add(new MyItem("String1", 5));
+            items.Add(new MyItem("String2", 15));
+            items.Add(new MyItem("Pablo", 64));
+            Console.WriteLine(items);
 
 
-            ints.Add(1);
-            ints.Add(1);
-            ints.Add(1);
-            ints.Add(1);
-            ints.Add(1);
-            Console.WriteLine(ints.Capacity);
         }
     }
 }
