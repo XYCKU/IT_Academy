@@ -4,22 +4,30 @@ using System.Collections.Generic;
 
 namespace Models
 {
-    public class MyList : IList<MyItem>, IEnumerator<MyItem>
+    public class MyList : IList<MyItem>
     {
         private MyItem[] items;
-        private int position = -1;
-        public MyItem this[int index] { get => items[index]; 
-                                    set { items[index] = value; } }
+        public MyItem this[int index] { 
+            get
+            {
+                if (index < 0 || index >= Count) 
+                { 
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+                return items[index];
+            } 
+            set {
+                if (index < 0 || index >= Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+                items[index] = value; 
+            } 
+        }
 
-        public int Count { get; private set; }
-        public int Capacity { get => items.Length; }
+        public int Count { get; private set; } = 0;
+        public int Capacity => items.Length;
         public bool IsReadOnly => false;
-
-        public MyItem Current => items[position];
-
-        object IEnumerator.Current => Current;
-
-        MyItem IList<MyItem>.this[int index] { get => items[index]; set => items[index] = value; }
 
         private void ExtendCollection()
         {
@@ -51,9 +59,9 @@ namespace Models
 
         public void RemoveAt(int index)
         {
-            for (int i = index; i < Count; i++)
+            for (int i = index + 1; i < Count; i++)
             {
-                this[i] = this[i + 1];
+                this[i - 1] = this[i];
             }
             Count--;
         }
@@ -61,7 +69,7 @@ namespace Models
         {
             for (int i = 0; i < Count; i++)
             {
-                if (this[i].Equals(item))
+                if (this[i] == item)
                 {
                     return i;
                 }
@@ -96,7 +104,7 @@ namespace Models
         {
             foreach (var it in items)
             {
-                if (it.Equals(item))
+                if (it == item)
                 {
                     return true;
                 }
@@ -128,22 +136,6 @@ namespace Models
         public IEnumerator GetEnumerator()
         {
             return items.GetEnumerator();
-        }
-
-        public bool MoveNext()
-        {
-            ++position;
-            return position < Count;
-        }
-
-        public void Reset()
-        {
-            position = -1;
-        }
-
-        public void Dispose()
-        {
-            
         }
     }
 }

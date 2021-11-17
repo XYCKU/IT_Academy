@@ -4,16 +4,25 @@ namespace Models
 {
     public class MyItem
     {
-        public string Name { get; private set; }
-        public int Pages { get; private set; }
-        public MyItem(string name = "No name", int pages = 0)
+        private string name;
+        private int pages;
+        public string Name { 
+            get => name;
+            private set {
+                name = value ?? throw new ArgumentNullException(nameof(value));
+            } 
+        }
+        public int Pages { 
+            get => pages; 
+            private set => pages = (value > 0) ? value : throw new ArgumentOutOfRangeException(nameof(value));
+        }
+
+        public MyItem(string name = "No name", int pages = 1)
         {
             Name = name;
             Pages = pages;
         }
-        public override string ToString()
-        {
-            return $"Name: {Name}, Pages: {Pages}";
-        }
+
+        public override string ToString() => $"Name: {Name}, Pages: {Pages}";
     }
 }
