@@ -24,5 +24,13 @@ namespace Models
         }
 
         public override string ToString() => $"Name: {Name}, Pages: {Pages}";
+        public static bool operator==(MyItem lhs, MyItem rhs)
+        {
+            return lhs.Name == rhs.Name && lhs.Pages == rhs.Pages;
+        }
+        public static bool operator!=(MyItem lhs, MyItem rhs)
+        {
+            return !(lhs == rhs);
+        }
     }
 }

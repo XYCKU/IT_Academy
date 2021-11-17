@@ -87,17 +87,13 @@ namespace Models
             {
                 this[i] = this[i - 1];
             }
-            this[index] = item;
             Count++;
+            this[index] = item;
         }
 
         public void Add(MyItem item)
         {
-            if (!HasSpace())
-            {
-                ExtendCollection();
-            }
-            items[Count++] = item;
+            Insert(Count, item);
         }
 
         public bool Contains(MyItem item)
