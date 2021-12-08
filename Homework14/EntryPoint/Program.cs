@@ -10,7 +10,7 @@ namespace EntryPoint
         static void Main(string[] args)
         {
             Person[] persons = new Person[]{ new Person("Jack", "Sparrow", 22),
-                                                new Person("Helen", "Smith", 49), 
+                                                new Person("helen", "Smith", 49), 
                                                 new Person("Arthur", "Morgan", 36), 
                                                 new Person("jim", "Hopper", 10), 
                                                 new Person("Karen", "cardona", 16), 
