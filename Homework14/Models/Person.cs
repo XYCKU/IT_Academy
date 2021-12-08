@@ -50,26 +50,16 @@ namespace Models
         {
             var type = this.GetType();
             var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-
+           
             foreach(var property in properties)
             {
                 foreach(var attribute in property.GetCustomAttributes())
                 {
-                    var nameAttr = attribute as NameAttribute;
-                    if (nameAttr != null)
+                    var attr = attribute as ValidationAttribute;
+                    if (attr == null) continue;
+                    if (!attr.IsValid(property.GetValue(this) as string))
                     {
-                        if (!nameAttr.IsValid(property.GetValue(this) as string)) {
-                            return false;
-                        }
-                        continue;
-                    }
-                    var ageAttr = attribute as AgeAttribute;
-                    if (ageAttr != null)
-                    {
-                        if (!ageAttr.IsValid((int)property.GetValue(this))) {
-                            return false;
-                        }
-                        continue;
+                        return false;
                     }
                 }
             }

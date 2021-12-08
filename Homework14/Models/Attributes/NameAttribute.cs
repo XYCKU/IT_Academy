@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace Models.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class NameAttribute : Attribute
+    public class NameAttribute : ValidationAttribute
     {
         private string filter;
         public string Filter
@@ -20,9 +20,10 @@ namespace Models.Attributes
         {
             Filter = filter;
         }
-        public bool IsValid(string name)
+        public override bool IsValid(object item)
         {
-            return Regex.Match(name, Filter).Success;
+            string name = (item as string)?? throw new ArgumentNullException(nameof(item));
+            return Regex.IsMatch(name, Filter);
         }
     }
 }
