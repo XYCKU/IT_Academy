@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Models.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class AgeAttribute : MyValidationAttribute
+    public class AgeAttribute : ValidationAttribute
     {
         private int minAge, maxAge;
         public int MinAge
@@ -12,7 +12,7 @@ namespace Models.Attributes
             get => minAge;
             private set
             {
-                minAge = (value >= 0)? value : throw new ArgumentOutOfRangeException(nameof(value));
+                minAge = (value >= 0) ? value : throw new ArgumentOutOfRangeException(nameof(value));
             }
         }
         public int MaxAge
@@ -30,10 +30,16 @@ namespace Models.Attributes
             MinAge = minAge;
             MaxAge = maxAge;
         }
-        public override ValidationResult Validate(object item)
+        public override bool IsValid(object item)
         {
             int age = (int)item;
-            return (age >= minAge && age <= maxAge)? ValidationResult.Success : new ValidationResult(ErrorMessage);
+            var result = age >= minAge && age <= maxAge;
+            if (!result)
+            {
+                this.ErrorMessage = string.IsNullOrEmpty(this.ErrorMessage) ? "napisesh suda" : this.ErrorMessage;
+            }
+
+            return result;
         }
     }
 }

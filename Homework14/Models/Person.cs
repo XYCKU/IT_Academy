@@ -20,7 +20,8 @@ namespace Models
             }
         }
         [Name(ErrorMessage = "Last name is not valid")]
-        public string LastName {
+        public string LastName
+        {
             get => lastName;
             private set
             {
@@ -28,7 +29,7 @@ namespace Models
             }
         }
         [Age(5, 26, ErrorMessage = "Age is not valid")]
-        public int Age 
+        public int Age
         {
             get => age;
             private set
@@ -40,7 +41,7 @@ namespace Models
                 age = value;
             }
         }
-        public Person() : this("No name", "No family", 0){ }
+        public Person() : this("No name", "No family", 0) { }
         public Person(string firstName, string lastName, int age)
         {
             FirstName = firstName;

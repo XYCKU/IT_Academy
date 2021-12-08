@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Models.Attributes
 {
-    public abstract class MyValidationAttribute : ValidationAttribute
+    public abstract class ValidationAttribute : Attribute
     {
-        public abstract ValidationResult Validate(object item);
+        public string ErrorMessage { get; set; }
+
+        public abstract bool IsValid(object item);
     }
 }
