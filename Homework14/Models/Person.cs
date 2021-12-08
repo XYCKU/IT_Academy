@@ -57,7 +57,7 @@ namespace Models
                 {
                     var attr = attribute as ValidationAttribute;
                     if (attr == null) continue;
-                    if (!attr.IsValid(property.GetValue(this) as string))
+                    if (!attr.IsValid(property.GetValue(this)))
                     {
                         return false;
                     }
