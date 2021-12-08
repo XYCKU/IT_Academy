@@ -16,7 +16,7 @@ namespace Models
             bool isValid = true;
             foreach (var property in properties)
             {
-                foreach (ValidationAttribute attribute in property.GetCustomAttributes(typeof(ValidationAttribute)))
+                foreach (var attribute in property.GetCustomAttributes<ValidationAttribute>())
                 {
                     if (!attribute.IsValid(property.GetValue(obj)))
                     {

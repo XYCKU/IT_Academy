@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Compression;
 
 namespace Models
 {
@@ -6,7 +7,7 @@ namespace Models
     {
         public static void Archive(string path, string fileName)
         {
-            if ()
+            
         }
     }
 }

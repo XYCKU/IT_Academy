@@ -10,7 +10,7 @@ namespace Models
     {
         private string firstName, lastName;
         private int age;
-        [Name(ErrorMessage = "First name is not valid")]
+        [Regex(ErrorMessage = "First name is not valid")]
         public string FirstName
         {
             get => firstName;
@@ -19,7 +19,7 @@ namespace Models
                 firstName = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
-        [Name(ErrorMessage = "Last name is not valid")]
+        [Regex(ErrorMessage = "Last name is not valid")]
         public string LastName
         {
             get => lastName;
@@ -28,7 +28,7 @@ namespace Models
                 lastName = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
-        [Age(5, 26, ErrorMessage = "Age is not valid")]
+        [Attributes.Range(5, 26, ErrorMessage = "Age is not valid")]
         public int Age
         {
             get => age;
