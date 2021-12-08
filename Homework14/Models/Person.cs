@@ -53,11 +53,9 @@ namespace Models
            
             foreach(var property in properties)
             {
-                foreach(var attribute in property.GetCustomAttributes())
+                foreach(var attribute in property.GetCustomAttributes<ValidationAttribute>())
                 {
-                    var attr = attribute as ValidationAttribute;
-                    if (attr == null) continue;
-                    if (!attr.IsValid(property.GetValue(this)))
+                    if (!attribute.IsValid(property.GetValue(this)))
                     {
                         return false;
                     }
