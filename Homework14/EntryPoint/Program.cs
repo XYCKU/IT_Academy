@@ -18,7 +18,8 @@ namespace EntryPoint
 
             foreach(var person in persons)
             {
-                Console.WriteLine($"{person.FirstName} {person.LastName} {person.Age} is {person.IsValid()}");
+                Console.WriteLine($"{person} is {ValidationService.Validate<MyValidationAttribute>(person)}");
+                Console.WriteLine();
             }
         }
     }

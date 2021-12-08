@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Models.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -9,7 +10,7 @@ namespace Models
     {
         private string firstName, lastName;
         private int age;
-        [Name]
+        [Name(ErrorMessage = "First name is not valid")]
         public string FirstName
         {
             get => firstName;
@@ -18,7 +19,7 @@ namespace Models
                 firstName = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
-        [Name]
+        [Name(ErrorMessage = "Last name is not valid")]
         public string LastName {
             get => lastName;
             private set
@@ -26,7 +27,7 @@ namespace Models
                 lastName = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
-        [Age(5, 26)]
+        [Age(5, 26, ErrorMessage = "Age is not valid")]
         public int Age 
         {
             get => age;
@@ -46,22 +47,6 @@ namespace Models
             LastName = lastName;
             Age = age;
         }
-        public bool IsValid()
-        {
-            var type = this.GetType();
-            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-           
-            foreach(var property in properties)
-            {
-                foreach(var attribute in property.GetCustomAttributes<ValidationAttribute>())
-                {
-                    if (!attribute.IsValid(property.GetValue(this)))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
+        public override string ToString() => $"{FirstName} {LastName} {Age}";
     }
 }
