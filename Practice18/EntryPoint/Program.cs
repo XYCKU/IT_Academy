@@ -55,7 +55,6 @@ namespace EntryPoint
             Console.WriteLine("Task5");
             var query = from customer in customers.OrderBy(x => x.Name).GroupBy(x => x.Name).Select(x => x.First())
                                                     .GroupBy(x => x.CarId).Select(x => x.First())
-                                                    
                         join car in cars
                         on customer.CarId equals car.Id
                         orderby customer.Name
